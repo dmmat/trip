@@ -38,7 +38,7 @@ const TripDetails = ({ trip }) => {
               <h1 className="text-2xl font-bold text-gray-900">{trip.name}</h1>
               <div className="mt-2 flex items-center text-gray-500">
                 <Calendar className="w-5 h-5 mr-2" />
-                <span>{trip.dates}</span>
+                <span>{trip.dates_text}</span>
               </div>
             </div>
             <div className="flex items-center space-x-4">

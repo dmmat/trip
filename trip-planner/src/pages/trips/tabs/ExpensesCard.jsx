@@ -12,7 +12,7 @@ const ExpensesCard = ({ trip }) => {
             <div>
               <h3 className="font-medium">Загальні витрати</h3>
               <p className="text-2xl font-bold text-gray-900">
-                {trip.totalExpenses.toLocaleString()} грн
+                {trip.expenses.total.toLocaleString()} грн
               </p>
             </div>
             <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
@@ -21,50 +21,37 @@ const ExpensesCard = ({ trip }) => {
           </div>
 
           <div className="divide-y">
-            <div className="py-4">
-              <h4 className="font-medium mb-2">Транспорт</h4>
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <div className="flex justify-between items-center">
-                  <span>Авіаквитки</span>
-                  <span className="font-medium">15000 грн</span>
+            {trip.expenses.categories.map((category) => (
+              <div key={category.id} className="py-4">
+                <h4 className="font-medium mb-2">{category.name}</h4>
+                <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+                  {category.items.map((item) => (
+                    <div
+                      key={item.id}
+                      className="flex justify-between items-center"
+                    >
+                      <span>{item.name}</span>
+                      <span className="font-medium">
+                        {item.amount.toLocaleString()} грн
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
-            <div className="py-4">
-              <h4 className="font-medium mb-2">Проживання</h4>
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <div className="flex justify-between items-center">
-                  <span>Готель</span>
-                  <span className="font-medium">25000 грн</span>
-                </div>
-              </div>
-            </div>
-            <div className="py-4">
-              <h4 className="font-medium mb-2">Інше</h4>
-              <div className="bg-gray-50 p-4 rounded-lg space-y-2">
-                <div className="flex justify-between items-center">
-                  <span>Харчування</span>
-                  <span className="font-medium">8000 грн</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>Розваги</span>
-                  <span className="font-medium">5000 грн</span>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
 
           <div className="mt-6">
             <h4 className="font-medium mb-4">Розподіл витрат</h4>
             <div className="bg-gray-50 p-4 rounded-lg space-y-2">
-              {[...Array(trip.participants)].map((_, index) => (
-                <div key={index} className="flex justify-between items-center">
-                  <span>Учасник {index + 1}</span>
+              {["1", "2"].map((participantId) => (
+                <div
+                  key={participantId}
+                  className="flex justify-between items-center"
+                >
+                  <span>Учасник {participantId}</span>
                   <span className="font-medium">
-                    {Math.round(
-                      trip.totalExpenses / trip.participants,
-                    ).toLocaleString()}{" "}
-                    грн
+                    {Math.round(trip.expenses.total / 2).toLocaleString()} грн
                   </span>
                 </div>
               ))}

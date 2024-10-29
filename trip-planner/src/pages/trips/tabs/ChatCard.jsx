@@ -13,88 +13,30 @@ const ChatCard = ({ trip }) => {
             {/* День 1 */}
             <div className="text-center">
               <span className="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full">
-                15 липня
+                {trip.chat.messages[0].date}
               </span>
             </div>
 
-            <div className="flex items-start space-x-3">
-              <img
-                src="https://i.pravatar.cc/300?u=mary"
-                alt="Марія"
-                className="w-8 h-8 rounded-full"
-              />
-              <div className="flex-1">
-                <div className="flex items-baseline space-x-2">
-                  <span className="font-medium">Марія</span>
-                  <span className="text-sm text-gray-500">10:30</span>
-                </div>
-                <div className="mt-1 p-3 bg-blue-50 text-gray-700 rounded-lg">
-                  Всім привіт! Я знайшла чудовий ресторан біля нашого готелю,
-                  рейтинг 4.8 та прийнятні ціни. Як щодо забронювати столик на
-                  перший вечір?
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-3">
-              <img
-                src="https://i.pravatar.cc/300?u=9"
-                alt="Петро"
-                className="w-8 h-8 rounded-full"
-              />
-              <div className="flex-1">
-                <div className="flex items-baseline space-x-2">
-                  <span className="font-medium">Петро</span>
-                  <span className="text-sm text-gray-500">10:35</span>
-                </div>
-                <div className="mt-1 p-3 bg-blue-50 text-gray-700 rounded-lg">
-                  Чудова ідея! Можеш скинути посилання на ресторан?
+            {trip.chat.messages.map((message) => (
+              <div key={message.id} className="flex items-start space-x-3">
+                <img
+                  src={`https://i.pravatar.cc/300?u=${message.userId}`}
+                  alt={`User ${message.userId}`}
+                  className="w-8 h-8 rounded-full"
+                />
+                <div className="flex-1">
+                  <div className="flex items-baseline space-x-2">
+                    <span className="font-medium">{message.user.name}</span>
+                    <span className="text-sm text-gray-500">
+                      {message.time}
+                    </span>
+                  </div>
+                  <div className="mt-1 p-3 bg-blue-50 text-gray-700 rounded-lg">
+                    {message.message}
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div className="flex items-start space-x-3">
-              <img
-                src="https://i.pravatar.cc/300?u=mary"
-                alt="Марія"
-                className="w-8 h-8 rounded-full"
-              />
-              <div className="flex-1">
-                <div className="flex items-baseline space-x-2">
-                  <span className="font-medium">Марія</span>
-                  <span className="text-sm text-gray-500">10:38</span>
-                </div>
-                <div className="mt-1 p-3 bg-blue-50 text-gray-700 rounded-lg">
-                  Звісно! Ось посилання на ресторан: [лінк]. Подивіться меню,
-                  якщо всім підходить, я забронюю столик на 19:00.
-                </div>
-              </div>
-            </div>
-
-            <div className="text-center">
-              <span className="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full">
-                Сьогодні
-              </span>
-            </div>
-
-            <div className="flex items-start space-x-3">
-              <img
-                src="https://i.pravatar.cc/300?u=anna"
-                alt="Анна"
-                className="w-8 h-8 rounded-full"
-              />
-              <div className="flex-1">
-                <div className="flex items-baseline space-x-2">
-                  <span className="font-medium">Анна</span>
-                  <span className="text-sm text-gray-500">14:15</span>
-                </div>
-                <div className="mt-1 p-3 bg-blue-50 text-gray-700 rounded-lg">
-                  Друзі, я знайшла екскурсію на другий день, можемо подивитись
-                  основні пам'ятки з місцевим гідом. Ціна 30€ з людини,
-                  тривалість 3 години.
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
 
           {/* Форма відправки повідомлення */}

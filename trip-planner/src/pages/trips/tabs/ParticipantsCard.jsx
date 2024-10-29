@@ -9,30 +9,34 @@ const ParticipantsCard = ({ trip }) => {
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <h3 className="font-medium">
-              Список учасників ({trip.participants})
+              Список учасників ({trip.participants.length})
             </h3>
             <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
               Запросити учасника
             </button>
           </div>
           <div className="divide-y">
-            {[...Array(trip.participants)].map((_, index) => (
+            {trip.participants.map((participant) => (
               <div
-                key={index}
+                key={participant.id}
                 className="py-4 flex items-center justify-between"
               >
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-gray-200 rounded-full" />
+                  <img
+                    src={participant.avatar}
+                    alt={participant.name}
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
                   <div>
-                    <p className="font-medium">Учасник {index + 1}</p>
-                    <p className="text-sm text-gray-500">
-                      user{index + 1}@example.com
-                    </p>
+                    <p className="font-medium">{participant.name}</p>
+                    <p className="text-sm text-gray-500">{participant.email}</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
                   <span className="text-sm text-gray-500">
-                    {index === 0 ? "Організатор" : "Учасник"}
+                    {participant.role === "organizer"
+                      ? "Організатор"
+                      : "Учасник"}
                   </span>
                 </div>
               </div>

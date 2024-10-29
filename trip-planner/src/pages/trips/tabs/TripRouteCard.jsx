@@ -11,7 +11,7 @@ const TripRouteCard = ({ trip }) => {
         <div className="space-y-4">
           {trip.locations.map((location, index) => (
             <div
-              key={index}
+              key={location.id}
               className="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg"
             >
               <div className="flex-shrink-0">
@@ -20,17 +20,20 @@ const TripRouteCard = ({ trip }) => {
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="font-medium">{location}</h3>
+                <h3 className="font-medium">{location.name}</h3>
+                <p className="text-sm text-gray-500">{location.country}</p>
                 <div className="mt-2 flex items-center text-sm text-gray-500">
                   <Clock className="w-4 h-4 mr-1" />
-                  <span>Запланований час: 3 години</span>
+                  <span>Запланований час: {location.duration}</span>
                 </div>
                 <div className="mt-2 flex items-center space-x-2">
                   <button className="text-sm text-blue-600 hover:text-blue-700">
-                    Додати фото
+                    Додати фото{" "}
+                    {location.photos.length > 0 &&
+                      `(${location.photos.length})`}
                   </button>
                   <button className="text-sm text-blue-600 hover:text-blue-700">
-                    Додати нотатки
+                    Додати нотатки {location.notes && "✓"}
                   </button>
                 </div>
               </div>

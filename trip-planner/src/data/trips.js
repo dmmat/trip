@@ -1,4 +1,4 @@
-export const trips = [
+export const trips_data = [
   {
     id: "1",
     name: "Подорож до Парижу",
