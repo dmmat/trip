@@ -100,20 +100,27 @@ const TripDetails = ({ trip }) => {
                     <h4 className="text-sm font-medium text-gray-500">
                       Найближча подія
                     </h4>
-                    <p className="mt-1">Виліт з Києва</p>
-                    <p className="text-sm text-gray-500">15 липня, 10:00</p>
+                    <p className="mt-1">{trip.importantInfo.nextEvent.title}</p>
+                    <p className="text-sm text-gray-500">
+                      {trip.importantInfo.nextEvent.date},{" "}
+                      {trip.importantInfo.nextEvent.time}
+                    </p>
                   </div>
                   <div>
                     <h4 className="text-sm font-medium text-gray-500">
                       Погода
                     </h4>
-                    <p className="mt-1">Париж: +25°C, сонячно</p>
+                    <p className="mt-1">
+                      {trip.importantInfo.weather.location}:{" "}
+                      {trip.importantInfo.weather.temperature}°C,{" "}
+                      {trip.importantInfo.weather.condition}
+                    </p>
                   </div>
-                  <Alert>
-                    <AlertDescription>
-                      Не забудьте перевірити термін дії паспорта
-                    </AlertDescription>
-                  </Alert>
+                  {trip.importantInfo.alerts.map((alert, index) => (
+                    <Alert key={index}>
+                      <AlertDescription>{alert.message}</AlertDescription>
+                    </Alert>
+                  ))}
                 </div>
               </CardContent>
             </Card>
@@ -124,14 +131,19 @@ const TripDetails = ({ trip }) => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-lg">
-                    📄 Авіаквитки.pdf
-                  </button>
-                  <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-lg">
-                    📄 Бронювання готелю.pdf
-                  </button>
-                  <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-lg">
-                    + Завантажити документ
+                  {trip.documents.slice(0, 3).map((doc, index) => (
+                    <button
+                      key={index}
+                      className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-lg"
+                    >
+                      📄 {doc.name}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => setActiveTab("docs")}
+                    className="w-full px-4 py-2 text-left text-sm text-blue-600 hover:bg-blue-50 rounded-lg"
+                  >
+                    Показати більше →
                   </button>
                 </div>
               </CardContent>

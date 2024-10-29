@@ -120,6 +120,25 @@ export const trips_data = [
           ],
         },
       ],
+      participants_cost: [
+        {
+          id: "1",
+          total_paid: 23000,
+          balance: -2750,
+        },
+        {
+          id: "2",
+          total_paid: 30000,
+          balance: 2750,
+        },
+      ],
+      transfers: [
+        {
+          from: "2",
+          to: "1",
+          amount: 2750,
+        },
+      ],
     },
     schedule: {
       days: [
@@ -479,7 +498,7 @@ export const trips_data = [
       weather: {
         location: "Париж",
         temperature: 25,
-        condition: "sunny",
+        condition: "сонячно",
       },
       alerts: [
         {
@@ -595,6 +614,35 @@ export const trips_data = [
               splitBetween: ["1", "2", "3"],
             },
           ],
+        },
+      ],
+      participants_cost: [
+        {
+          id: "1",
+          total_paid: 10000,
+          balance: 5000,
+        },
+        {
+          id: "2",
+          total_paid: 3000,
+          balance: -2000,
+        },
+        {
+          id: "3",
+          total_paid: 2000,
+          balance: -3000,
+        },
+      ],
+      transfers: [
+        {
+          from: "2",
+          to: "1",
+          amount: 2000,
+        },
+        {
+          from: "3",
+          to: "1",
+          amount: 3000,
         },
       ],
     },
@@ -770,14 +818,14 @@ export const trips_data = [
     importantInfo: {
       nextEvent: {
         id: "1",
-        title: "Виїзд з Києва",
-        date: "2024-08-10",
+        title: "Виїзд з Хмельницького",
+        date: "10.08.2024",
         time: "07:00",
       },
       weather: {
         location: "Буковель",
         temperature: 22,
-        condition: "partly_cloudy",
+        condition: "хмарно",
       },
       alerts: [
         {

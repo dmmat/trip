@@ -1,4 +1,17 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { dateFormatter } from "@/lib/utils";
+
+const event_typt_dict = {
+  transport: "Транспорт",
+  accommodation: "Проживання",
+  sightseeing: "Огляд",
+  food: "Їжа",
+  culture: "Культура",
+  leisure: "Відпочинок",
+  entertainment: "Розваги",
+  shopping: "Покупки",
+  activity: "Активності",
+};
 
 const ScheduleCard = ({ trip }) => {
   return (
@@ -16,7 +29,7 @@ const ScheduleCard = ({ trip }) => {
           {trip.schedule.days.map((day) => (
             <div key={day.id}>
               <h3 className="text-lg font-semibold mb-4">
-                День {day.id} - {day.location}
+                День {day.id} - {dateFormatter(day.date)} - {day.location}
               </h3>
               <div className="space-y-4">
                 {day.events.map((event) => (
@@ -35,27 +48,19 @@ const ScheduleCard = ({ trip }) => {
                       <div className="mt-2 flex items-center gap-2">
                         <span
                           className={`px-2 py-1 ${
-                            event.type === "transport"
-                              ? "bg-blue-100 text-blue-700"
-                              : event.type === "accommodation"
-                                ? "bg-green-100 text-green-700"
-                                : event.type === "sightseeing"
-                                  ? "bg-purple-100 text-purple-700"
-                                  : event.type === "food"
-                                    ? "bg-yellow-100 text-yellow-700"
-                                    : event.type === "culture"
-                                      ? "bg-red-100 text-red-700"
-                                      : event.type === "leisure"
-                                        ? "bg-indigo-100 text-indigo-700"
-                                        : event.type === "entertainment"
-                                          ? "bg-pink-100 text-pink-700"
-                                          : event.type === "shopping"
-                                            ? "bg-orange-100 text-orange-700"
-                                            : "bg-gray-100 text-gray-700"
+                            {
+                              transport: "bg-blue-100 text-blue-700",
+                              accommodation: "bg-green-100 text-green-700",
+                              sightseeing: "bg-purple-100 text-purple-700",
+                              food: "bg-yellow-100 text-yellow-700",
+                              culture: "bg-red-100 text-red-700",
+                              leisure: "bg-indigo-100 text-indigo-700",
+                              entertainment: "bg-pink-100 text-pink-700",
+                              shopping: "bg-orange-100 text-orange-700",
+                            }[event.type] || "bg-gray-100 text-gray-700"
                           } text-xs rounded-full`}
                         >
-                          {event.type.charAt(0).toUpperCase() +
-                            event.type.slice(1)}
+                          {event_typt_dict[event.type] || event.type}
                         </span>
                         <span className="text-sm text-gray-500">
                           {event.duration}

@@ -8,27 +8,9 @@ import TripList from "./pages/trips/TripList";
 import CreateTripModal from "./components/CreateTripModal";
 import TripDetails from "./pages/trips/TripDetails";
 import { trips_data } from "@/data/trips";
-import { datePeriodFormatter } from "@/lib/utils";
+import { TripMapper } from "@/lib/mappers";
 
-let data_trips = trips_data.map((trip) => {
-  trip.totalExpenses = trip.expenses.total;
-  trip.allLocations = trip.locations.map((location) => location.name);
-  trip.totalParticipants = trip.participants.length;
-  trip.dates_text = datePeriodFormatter(
-    trip.dates.startDate,
-    trip.dates.endDate,
-  );
-  if (trip.chat && trip.chat.messages) {
-    trip.chat.messages = trip.chat.messages.map((message) => ({
-      ...message,
-      user: trip.participants.find(
-        (participant) => participant.id === message.userId,
-      ),
-    }));
-  }
-
-  return trip;
-});
+let data_trips = TripMapper(trips_data);
 
 const App = () => {
   const { user, login, logout, updateUser } = useAuth();

@@ -14,3 +14,11 @@ export function datePeriodFormatter(dateFrom, dateTo) {
   }
   return result;
 }
+
+export function dateFormatter(date, format = "short") {
+  const dateObj = new Date(date);
+  if (format === "short")
+    return `${dateObj.getDate()} ${dateObj.toLocaleString("uk-UA", { month: "short" })}`;
+  if (format === "long")
+    return `${dateObj.getDate()} ${dateObj.toLocaleString("uk-UA", { month: "long" })} ${dateObj.getFullYear()}`;
+}
