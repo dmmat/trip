@@ -1,9 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Users, Map, Wallet } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-const TripList = ({ trips, onCreateClick, onTripSelect }) => {
+const TripList = ({ trips, onCreateClick }) => {
+  const navigate = useNavigate();
+
   return (
     <div>
       {/* Заголовок з кнопкою створення */}
@@ -23,7 +26,7 @@ const TripList = ({ trips, onCreateClick, onTripSelect }) => {
           <Card
             key={trip.id}
             className="hover:shadow-lg transition-shadow cursor-pointer"
-            onClick={() => onTripSelect(trip)}
+            onClick={() => navigate(`/trips/${trip.id}`)}
           >
             <CardContent className="p-6 mt-6">
               <h2 className="text-xl font-semibold mb-2">{trip.name}</h2>

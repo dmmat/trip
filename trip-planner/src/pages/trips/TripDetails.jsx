@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import {
   Users,
   Map,
@@ -8,7 +9,7 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert"; // Виправлений імпорт
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import TripRouteCard from "./tabs/TripRouteCard";
 import ParticipantsCard from "./tabs/ParticipantsCard";
 import ExpensesCard from "./tabs/ExpensesCard";
@@ -16,8 +17,19 @@ import ScheduleCard from "./tabs/SheduleCard";
 import DocsCard from "./tabs/DocsCard";
 import ChatCard from "./tabs/ChatCard";
 
-const TripDetails = ({ trip }) => {
+const TripDetails = ({ trips }) => {
+  const { tripId } = useParams();
   const [activeTab, setActiveTab] = useState("route");
+  const [trip, setTrip] = useState(null);
+
+  useEffect(() => {
+    const selectedTrip = trips.find((t) => t.id === tripId);
+    setTrip(selectedTrip);
+  }, [tripId, trips]);
+
+  if (!trip) {
+    return <div>Loading...</div>;
+  }
 
   const tabs = [
     { id: "route", name: "Маршрут", icon: Map },
