@@ -7,7 +7,7 @@ export const TripMapper = (trips = []) => {
     trip.allLocations = trip.locations.map((location) => location.name);
     trip.totalParticipants = trip.participants.length;
     trip.dates_text = datePeriodFormatter(trip.dates.start, trip.dates.end);
-    if (trip.chat && trip.chat.messages) {
+    if (trip.chat?.messages) {
       trip.chat.messages = trip.chat.messages.map((message) => ({
         ...message,
         user: trip.participants.find(
