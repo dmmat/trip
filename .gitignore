@@ -1,0 +1,7 @@
+# PocketBase data directory
+pocketbase/pb_data/
+pocketbase/pb_migrations/
+
+# Environment files
+.env
+.env.local
