@@ -1,16 +1,39 @@
 import { datePeriodFormatter } from "./utils";
 
+// Map PocketBase trip data to the frontend format
+export const mapPocketBaseTrip = async (trip, includeDetails = false) => {
+  const mapped = {
+    id: trip.id,
+    name: trip.name,
+    status: trip.status,
+    dates_text: datePeriodFormatter(trip.start_date, trip.end_date),
+    start_date: trip.start_date,
+    end_date: trip.end_date,
+    description: trip.description || '',
+    organizer: trip.expand?.organizer || trip.organizer,
+  };
+
+  // Add minimal data for list view
+  mapped.totalParticipants = 0;
+  mapped.totalExpenses = 0;
+  mapped.allLocations = [];
+
+  // If details are needed, they should be loaded separately
+  return mapped;
+};
+
+// Legacy mapper for hardcoded data
 export const TripMapper = (trips = []) => {
   if (!trips.length) return trips;
   return trips.map((trip) => {
-    trip.totalExpenses = trip.expenses.total;
-    trip.allLocations = trip.locations.map((location) => location.name);
-    trip.totalParticipants = trip.participants.length;
-    trip.dates_text = datePeriodFormatter(trip.dates.start, trip.dates.end);
+    trip.totalExpenses = trip.expenses?.total || 0;
+    trip.allLocations = trip.locations?.map((location) => location.name) || [];
+    trip.totalParticipants = trip.participants?.length || 0;
+    trip.dates_text = trip.dates ? datePeriodFormatter(trip.dates.start, trip.dates.end) : '';
     if (trip.chat?.messages) {
       trip.chat.messages = trip.chat.messages.map((message) => ({
         ...message,
-        user: trip.participants.find(
+        user: trip.participants?.find(
           (participant) => participant.id === message.userId,
         ),
       }));
@@ -20,7 +43,7 @@ export const TripMapper = (trips = []) => {
         ...category,
         items: category.items.map((item) => ({
           ...item,
-          user: trip.participants.find(
+          user: trip.participants?.find(
             (participant) => participant.id === item.paidBy,
           ),
         })),
@@ -30,15 +53,15 @@ export const TripMapper = (trips = []) => {
       trip.expenses.participants_cost = trip.expenses.participants_cost.map(
         (participant) => ({
           ...participant,
-          user: trip.participants.find((p) => p.id === participant.id),
+          user: trip.participants?.find((p) => p.id === participant.id),
         }),
       );
 
     if (trip.expenses?.transfers)
       trip.expenses.transfers = trip.expenses.transfers.map((transfer) => ({
         ...transfer,
-        from: trip.participants.find((p) => p.id === transfer.from),
-        to: trip.participants.find((p) => p.id === transfer.to),
+        from: trip.participants?.find((p) => p.id === transfer.from),
+        to: trip.participants?.find((p) => p.id === transfer.to),
       }));
 
     return trip;

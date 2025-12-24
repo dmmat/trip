@@ -1,18 +1,67 @@
 import pb from './pocketbase';
 
 export const tripsService = {
-  // Get all trips for the current user
+  // Get all trips for the current user with summary data
   async getTrips() {
     try {
       const records = await pb.collection('trips').getFullList({
         sort: '-created',
         expand: 'organizer',
       });
-      return records;
+      
+      // Enrich each trip with summary data
+      const enrichedTrips = await Promise.all(records.map(async (trip) => {
+        try {
+          // Get participants count
+          const participants = await pb.collection('trip_participants').getList(1, 1, {
+            filter: `trip="${trip.id}"`,
+          });
+          
+          // Get locations
+          const locations = await pb.collection('locations').getList(1, 100, {
+            filter: `trip="${trip.id}"`,
+            sort: 'order',
+          });
+          
+          // Get expenses sum
+          const expenses = await pb.collection('expenses').getList(1, 1000, {
+            filter: `trip="${trip.id}"`,
+          });
+          
+          const totalExpenses = expenses.items.reduce((sum, exp) => sum + exp.amount, 0);
+          
+          return {
+            ...trip,
+            totalParticipants: participants.totalItems || 0,
+            totalExpenses: totalExpenses,
+            allLocations: locations.items.map(l => l.name),
+            dates_text: this._formatDatePeriod(trip.start_date, trip.end_date),
+          };
+        } catch (err) {
+          console.error(`Error enriching trip ${trip.id}:`, err);
+          return {
+            ...trip,
+            totalParticipants: 0,
+            totalExpenses: 0,
+            allLocations: [],
+            dates_text: this._formatDatePeriod(trip.start_date, trip.end_date),
+          };
+        }
+      }));
+      
+      return enrichedTrips;
     } catch (error) {
       console.error('Error fetching trips:', error);
       throw error;
     }
+  },
+
+  // Helper to format date period
+  _formatDatePeriod(startDate, endDate) {
+    const months = ['січ', 'лют', 'бер', 'кві', 'тра', 'чер', 'лип', 'сер', 'вер', 'жов', 'лис', 'гру'];
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    return `${start.getDate()} ${months[start.getMonth()]} - ${end.getDate()} ${months[end.getMonth()]}, ${start.getFullYear()}`;
   },
 
   // Get a specific trip by ID

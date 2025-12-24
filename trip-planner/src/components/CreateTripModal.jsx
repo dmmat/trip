@@ -15,38 +15,39 @@ const CreateTripModal = ({ onClose, onCreateTrip }) => {
   const [location, setLocation] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    
     if (!tripData.name || !tripData.startDate || !tripData.endDate) {
       setError("Будь ласка, заповніть усі обов'язкові поля");
       return;
     }
 
-    const formatDate = (date) => {
-      const d = new Date(date);
-      const months = [
-        "січ",
-        "лют",
-        "бер",
-        "кві",
-        "тра",
-        "чер",
-        "лип",
-        "сер",
-        "вер",
-        "жов",
-        "лис",
-        "гру",
-      ];
-      return `${d.getDate()} ${months[d.getMonth()]}`;
-    };
+    // Validate dates
+    if (new Date(tripData.endDate) < new Date(tripData.startDate)) {
+      setError("Дата завершення не може бути раніше дати початку");
+      return;
+    }
 
-    const formattedTrip = {
-      ...tripData,
-      dates: `${formatDate(tripData.startDate)} - ${formatDate(tripData.endDate)}, ${new Date(tripData.startDate).getFullYear()}`,
-    };
+    const result = await onCreateTrip({
+      name: tripData.name,
+      startDate: tripData.startDate,
+      endDate: tripData.endDate,
+      description: tripData.description,
+      status: 'planned',
+    });
 
-    onCreateTrip(formattedTrip);
+    if (result && result.success) {
+      // After creating the trip, add locations if any
+      if (tripData.locations.length > 0 && result.trip) {
+        // We'll add locations through the service later
+        // For now, just close the modal
+      }
+      onClose();
+    } else if (result && result.error) {
+      setError(result.error);
+    }
   };
 
   const addLocation = () => {
