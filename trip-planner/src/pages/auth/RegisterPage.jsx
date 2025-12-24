@@ -14,8 +14,10 @@ const RegisterPage = ({ onRegister, onNavigateToLogin }) => {
   });
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    
     if (
       !formData.name ||
       !formData.email ||
@@ -29,7 +31,15 @@ const RegisterPage = ({ onRegister, onNavigateToLogin }) => {
       setError("Паролі не співпадають");
       return;
     }
-    onRegister(formData);
+    if (formData.password.length < 8) {
+      setError("Пароль повинен містити мінімум 8 символів");
+      return;
+    }
+    
+    const result = await onRegister(formData);
+    if (!result.success) {
+      setError(result.error);
+    }
   };
 
   return (
