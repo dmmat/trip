@@ -23,12 +23,12 @@ export const tripsService = {
             sort: 'order',
           });
           
-          // Get expenses sum
-          const expenses = await pb.collection('expenses').getList(1, 1000, {
+          // Get expenses sum - use getFullList to avoid pagination issues
+          const expenses = await pb.collection('expenses').getFullList({
             filter: `trip="${trip.id}"`,
           });
           
-          const totalExpenses = expenses.items.reduce((sum, exp) => sum + exp.amount, 0);
+          const totalExpenses = expenses.reduce((sum, exp) => sum + exp.amount, 0);
           
           return {
             ...trip,
@@ -80,6 +80,10 @@ export const tripsService = {
   // Create a new trip
   async createTrip(tripData) {
     try {
+      if (!pb.authStore.model?.id) {
+        throw new Error('User not authenticated');
+      }
+
       const data = {
         name: tripData.name,
         status: tripData.status || 'planned',
@@ -320,6 +324,10 @@ export const tripsService = {
   // Upload a document
   async uploadDocument(tripId, file, category, name) {
     try {
+      if (!pb.authStore.model?.id) {
+        throw new Error('User not authenticated');
+      }
+
       const formData = new FormData();
       formData.append('trip', tripId);
       formData.append('name', name || file.name);
@@ -353,6 +361,10 @@ export const tripsService = {
   // Send a message
   async sendMessage(tripId, message) {
     try {
+      if (!pb.authStore.model?.id) {
+        throw new Error('User not authenticated');
+      }
+
       const data = {
         trip: tripId,
         user: pb.authStore.model.id,

@@ -63,8 +63,13 @@ export const useAuth = () => {
 
   const register = async (userData) => {
     try {
+      // Generate a username from email (simple approach)
+      const emailPrefix = userData.email.split('@')[0];
+      const randomSuffix = Math.random().toString(36).substring(2, 8);
+      const username = `${emailPrefix}_${randomSuffix}`;
+
       const data = {
-        username: userData.email.split('@')[0] + '_' + Date.now(),
+        username: username,
         email: userData.email,
         emailVisibility: true,
         password: userData.password,

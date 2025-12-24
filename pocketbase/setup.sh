@@ -2,10 +2,21 @@
 
 # PocketBase Setup Script
 # This script creates the necessary collections in PocketBase using the REST API
+# Usage: ./setup.sh [admin_email] [admin_password]
+# 
+# IMPORTANT: Use a strong password for production!
+# Example: ./setup.sh admin@example.com "MyStr0ngP@ssw0rd!"
 
 BASE_URL="http://127.0.0.1:8090"
 ADMIN_EMAIL="${1:-admin@trip-planner.local}"
 ADMIN_PASSWORD="${2:-adminPassword123}"
+
+if [ "$ADMIN_PASSWORD" == "adminPassword123" ]; then
+  echo "⚠️  WARNING: You are using the default password!"
+  echo "For production, please provide a strong password as the second argument."
+  echo "Example: ./setup.sh admin@example.com 'YourStrongPassword123!'"
+  echo ""
+fi
 
 echo "🔧 Setting up PocketBase collections..."
 echo ""
