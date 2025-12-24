@@ -16,13 +16,19 @@ const LoginPage = ({ onLogin, onNavigateToRegister }) => {
 
   // В handleSubmit передавайте значення rememberMe:
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    
     if (!formData.email || !formData.password) {
       setError("Будь ласка, заповніть всі поля");
       return;
     }
-    onLogin(formData, rememberMe);
+    
+    const result = await onLogin(formData, rememberMe);
+    if (!result.success) {
+      setError(result.error);
+    }
   };
 
   return (

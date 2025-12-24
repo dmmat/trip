@@ -14,31 +14,21 @@ import { TripMapper } from "@/lib/mappers";
 let data_trips = TripMapper(trips_data);
 
 const App = () => {
-  const { user, login, logout, updateUser } = useAuth();
+  const { user, login, register, logout, updateUser } = useAuth();
   const [isRegistering, setIsRegistering] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedTrip, setSelectedTrip] = useState(null);
   const [showProfile, setShowProfile] = useState(false);
   const [trips, setTrips] = useState(data_trips);
 
-  const handleLogin = (credentials, remember) => {
-    login(
-      {
-        name: "Тестовий користувач",
-        email: credentials.email,
-      },
-      remember,
-    );
+  const handleLogin = async (credentials, remember) => {
+    const result = await login(credentials, remember);
+    return result;
   };
 
-  const handleRegister = (userData) => {
-    login(
-      {
-        name: userData.name,
-        email: userData.email,
-      },
-      true,
-    );
+  const handleRegister = async (userData) => {
+    const result = await register(userData);
+    return result;
   };
 
   const handleLogout = () => {
