@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   Users,
   Map,
@@ -18,6 +19,7 @@ import DocsCard from "./tabs/DocsCard";
 import ChatCard from "./tabs/ChatCard";
 
 const TripDetails = ({ trips }) => {
+  const { t } = useTranslation();
   const { tripId } = useParams();
   const [activeTab, setActiveTab] = useState("route");
   const [trip, setTrip] = useState(null);
@@ -28,21 +30,20 @@ const TripDetails = ({ trips }) => {
   }, [tripId, trips]);
 
   if (!trip) {
-    return <div>Loading...</div>;
+    return <div>{t("trips.loading")}</div>;
   }
 
   const tabs = [
-    { id: "route", name: "Маршрут", icon: Map },
-    { id: "participants", name: "Учасники", icon: Users },
-    { id: "expenses", name: "Витрати", icon: Wallet },
-    { id: "schedule", name: "Розклад", icon: Calendar },
-    { id: "docs", name: "Документи", icon: FileText },
-    { id: "chat", name: "Обговорення", icon: MessageSquare },
+    { id: "route", name: t("tabs.route"), icon: Map },
+    { id: "participants", name: t("tabs.participants"), icon: Users },
+    { id: "expenses", name: t("tabs.expenses"), icon: Wallet },
+    { id: "schedule", name: t("tabs.schedule"), icon: Calendar },
+    { id: "docs", name: t("tabs.docs"), icon: FileText },
+    { id: "chat", name: t("tabs.chat"), icon: MessageSquare },
   ];
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Заголовок подорожі */}
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex justify-between items-start">
@@ -55,17 +56,16 @@ const TripDetails = ({ trips }) => {
             </div>
             <div className="flex items-center space-x-4">
               <button className="px-4 py-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200">
-                Редагувати
+                {t("trips.edit")}
               </button>
               <button className="px-4 py-2 bg-green-100 text-green-600 rounded-lg hover:bg-green-200">
-                Поділитися
+                {t("trips.share")}
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Навігація */}
       <div className="border-b bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex space-x-8">
@@ -87,10 +87,8 @@ const TripDetails = ({ trips }) => {
         </div>
       </div>
 
-      {/* Основний контент */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-3 gap-6">
-          {/* Основний контент */}
           <div className="col-span-2">
             {activeTab === "route" && <TripRouteCard trip={trip} />}
             {activeTab === "participants" && <ParticipantsCard trip={trip} />}
@@ -100,32 +98,24 @@ const TripDetails = ({ trips }) => {
             {activeTab === "chat" && <ChatCard trip={trip} />}
           </div>
 
-          {/* Бічна панель */}
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Важлива інформація</CardTitle>
+                <CardTitle>{t("details.importantInfo")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <h4 className="text-sm font-medium text-gray-500">
-                      Найближча подія
-                    </h4>
+                    <h4 className="text-sm font-medium text-gray-500">{t("details.nextEvent")}</h4>
                     <p className="mt-1">{trip.importantInfo.nextEvent.title}</p>
                     <p className="text-sm text-gray-500">
-                      {trip.importantInfo.nextEvent.date},{" "}
-                      {trip.importantInfo.nextEvent.time}
+                      {trip.importantInfo.nextEvent.date}, {trip.importantInfo.nextEvent.time}
                     </p>
                   </div>
                   <div>
-                    <h4 className="text-sm font-medium text-gray-500">
-                      Погода
-                    </h4>
+                    <h4 className="text-sm font-medium text-gray-500">{t("details.weather")}</h4>
                     <p className="mt-1">
-                      {trip.importantInfo.weather.location}:{" "}
-                      {trip.importantInfo.weather.temperature}°C,{" "}
-                      {trip.importantInfo.weather.condition}
+                      {trip.importantInfo.weather.location}: {trip.importantInfo.weather.temperature}°C, {trip.importantInfo.weather.condition}
                     </p>
                   </div>
                   {trip.importantInfo.alerts.map((alert, index) => (
@@ -139,7 +129,7 @@ const TripDetails = ({ trips }) => {
 
             <Card>
               <CardHeader>
-                <CardTitle>Документи</CardTitle>
+                <CardTitle>{t("details.documents")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
@@ -148,14 +138,14 @@ const TripDetails = ({ trips }) => {
                       key={index}
                       className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-lg"
                     >
-                      📄 {doc.name}
+                      {doc.name}
                     </button>
                   ))}
                   <button
                     onClick={() => setActiveTab("docs")}
                     className="w-full px-4 py-2 text-left text-sm text-blue-600 hover:bg-blue-50 rounded-lg"
                   >
-                    Показати більше →
+                    {t("details.showMore")} →
                   </button>
                 </div>
               </CardContent>

@@ -1,26 +1,26 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Users, Map, Wallet } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 const TripList = ({ trips, onCreateClick }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   return (
     <div>
-      {/* Заголовок з кнопкою створення */}
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Мої подорожі</h1>
+        <h1 className="text-2xl font-bold text-gray-900">{t("trips.title")}</h1>
         <Button
           onClick={onCreateClick}
           className="bg-blue-600 text-white hover:bg-blue-700"
         >
-          Створити подорож
+          {t("trips.create")}
         </Button>
       </div>
 
-      {/* Список подорожей */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
         {trips.map((trip) => (
           <Card
@@ -34,7 +34,7 @@ const TripList = ({ trips, onCreateClick }) => {
               <div className="space-y-2">
                 <div className="flex items-center text-gray-600">
                   <Users className="w-5 h-5 mr-2" />
-                  <span>{trip.totalParticipants} учасників</span>
+                  <span>{trip.totalParticipants} {t("trips.participants")}</span>
                 </div>
                 <div className="flex items-center text-gray-600">
                   <Map className="w-5 h-5 mr-2" />
@@ -42,7 +42,7 @@ const TripList = ({ trips, onCreateClick }) => {
                 </div>
                 <div className="flex items-center text-gray-600">
                   <Wallet className="w-5 h-5 mr-2" />
-                  <span>{trip.totalExpenses.toLocaleString()} грн</span>
+                  <span>{trip.totalExpenses.toLocaleString()} {t("common.uah")}</span>
                 </div>
               </div>
             </CardContent>

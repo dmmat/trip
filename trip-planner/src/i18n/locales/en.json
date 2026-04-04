@@ -1,0 +1,129 @@
+{
+  "app": {
+    "name": "TripPlanner"
+  },
+  "auth": {
+    "login": "Sign In",
+    "loginTitle": "Sign in to your account",
+    "register": "Sign Up",
+    "registerTitle": "Create an account",
+    "logout": "Sign Out",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "name": "Name",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "or": "Or",
+    "termsAgree": "I agree to the",
+    "termsLink": "Terms of Service",
+    "fillAllFields": "Please fill in all fields",
+    "passwordsNoMatch": "Passwords do not match",
+    "passwordMinLength": "Password must be at least 6 characters",
+    "invalidCredentials": "Invalid email or password",
+    "emailExists": "This email is already registered",
+    "registrationSuccess": "Registration successful. Please check your email to verify.",
+    "verifyEmail": "Verify email",
+    "verifyEmailSent": "A verification email has been sent to your inbox",
+    "verifyEmailSuccess": "Email verified successfully",
+    "resendVerification": "Resend",
+    "resetPassword": "Reset password",
+    "resetPasswordTitle": "Reset Password",
+    "newPassword": "New Password",
+    "resetSent": "If the email exists, a reset link was sent.",
+    "resetSuccess": "Password reset successfully",
+    "continueWith": "Or continue with",
+    "oauthError": "Authentication error with {{provider}}"
+  },
+  "nav": {
+    "myTrips": "My Trips",
+    "profile": "My Profile",
+    "notifications": "Notifications"
+  },
+  "trips": {
+    "title": "My Trips",
+    "create": "Create Trip",
+    "createTitle": "Create New Trip",
+    "name": "Trip Name",
+    "namePlaceholder": "e.g.: Vacation in the Carpathians",
+    "description": "Trip Description",
+    "descriptionPlaceholder": "Add a short description...",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "locations": "Locations",
+    "addLocation": "Add",
+    "locationPlaceholder": "Add a destination",
+    "participants": "participants",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "share": "Share",
+    "loading": "Loading..."
+  },
+  "tabs": {
+    "route": "Route",
+    "participants": "Participants",
+    "expenses": "Expenses",
+    "schedule": "Schedule",
+    "docs": "Documents",
+    "chat": "Discussion"
+  },
+  "details": {
+    "importantInfo": "Important Information",
+    "nextEvent": "Next Event",
+    "weather": "Weather",
+    "documents": "Documents",
+    "showMore": "Show more"
+  },
+  "profile": {
+    "title": "My Profile",
+    "edit": "Edit Profile",
+    "nameRequired": "Name *",
+    "emailRequired": "Email *",
+    "phone": "Phone",
+    "city": "City",
+    "save": "Save Changes",
+    "cancel": "Cancel",
+    "fillRequired": "Please fill in required fields",
+    "language": "Language"
+  },
+  "common": {
+    "uah": "UAH",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  },
+  "expenses": {
+    "total": "Total Expenses",
+    "paid": "Paid",
+    "balance": "Balance",
+    "transfers": "Transfers",
+    "owes": "owes",
+    "to": "to"
+  },
+  "schedule": {
+    "day": "Day"
+  },
+  "chat": {
+    "placeholder": "Write a message...",
+    "send": "Send"
+  },
+  "docs": {
+    "upload": "Upload",
+    "noDocuments": "No documents"
+  },
+  "participants": {
+    "organizer": "Organizer",
+    "participant": "Participant",
+    "invite": "Invite"
+  },
+  "route": {
+    "country": "Country",
+    "duration": "Duration"
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "app": {
+    "name": "TripPlanner"
+  },
+  "auth": {
+    "login": "Увійти",
+    "loginTitle": "Увійти в акаунт",
+    "register": "Зареєструватися",
+    "registerTitle": "Створити акаунт",
+    "logout": "Вийти",
+    "email": "Email",
+    "password": "Пароль",
+    "confirmPassword": "Підтвердження пароля",
+    "name": "Ім'я",
+    "rememberMe": "Запам'ятати мене",
+    "forgotPassword": "Забули пароль?",
+    "noAccount": "Не маєте акаунту?",
+    "hasAccount": "Вже маєте акаунт?",
+    "or": "Або",
+    "termsAgree": "Я погоджуюся з",
+    "termsLink": "умовами використання",
+    "fillAllFields": "Будь ласка, заповніть всі поля",
+    "passwordsNoMatch": "Паролі не співпадають",
+    "passwordMinLength": "Пароль має бути не менше 6 символів",
+    "invalidCredentials": "Невірний email або пароль",
+    "emailExists": "Цей email вже зареєстровано",
+    "registrationSuccess": "Реєстрація успішна. Перевірте пошту для підтвердження.",
+    "verifyEmail": "Підтвердіть email",
+    "verifyEmailSent": "Лист з підтвердженням надіслано на вашу пошту",
+    "verifyEmailSuccess": "Email успішно підтверджено",
+    "resendVerification": "Надіслати повторно",
+    "resetPassword": "Скинути пароль",
+    "resetPasswordTitle": "Скидання пароля",
+    "newPassword": "Новий пароль",
+    "resetSent": "Якщо email існує, посилання для скидання надіслано.",
+    "resetSuccess": "Пароль успішно змінено",
+    "continueWith": "Або увійти через",
+    "oauthError": "Помилка авторизації через {{provider}}"
+  },
+  "nav": {
+    "myTrips": "Мої подорожі",
+    "profile": "Мій профіль",
+    "notifications": "Сповіщення"
+  },
+  "trips": {
+    "title": "Мої подорожі",
+    "create": "Створити подорож",
+    "createTitle": "Створення нової подорожі",
+    "name": "Назва подорожі",
+    "namePlaceholder": "Наприклад: Відпустка в Карпатах",
+    "description": "Опис подорожі",
+    "descriptionPlaceholder": "Додайте короткий опис подорожі...",
+    "startDate": "Дата початку",
+    "endDate": "Дата завершення",
+    "locations": "Локації",
+    "addLocation": "Додати",
+    "locationPlaceholder": "Додайте місце призначення",
+    "participants": "учасників",
+    "cancel": "Скасувати",
+    "edit": "Редагувати",
+    "share": "Поділитися",
+    "loading": "Завантаження..."
+  },
+  "tabs": {
+    "route": "Маршрут",
+    "participants": "Учасники",
+    "expenses": "Витрати",
+    "schedule": "Розклад",
+    "docs": "Документи",
+    "chat": "Обговорення"
+  },
+  "details": {
+    "importantInfo": "Важлива інформація",
+    "nextEvent": "Найближча подія",
+    "weather": "Погода",
+    "documents": "Документи",
+    "showMore": "Показати більше"
+  },
+  "profile": {
+    "title": "Мій профіль",
+    "edit": "Редагувати профіль",
+    "nameRequired": "Ім'я *",
+    "emailRequired": "Email *",
+    "phone": "Телефон",
+    "city": "Місто",
+    "save": "Зберегти зміни",
+    "cancel": "Скасувати",
+    "fillRequired": "Будь ласка, заповніть обов'язкові поля",
+    "language": "Мова"
+  },
+  "common": {
+    "uah": "грн",
+    "cancel": "Скасувати",
+    "save": "Зберегти",
+    "delete": "Видалити",
+    "edit": "Редагувати",
+    "loading": "Завантаження...",
+    "error": "Помилка",
+    "success": "Успішно"
+  },
+  "expenses": {
+    "total": "Загальні витрати",
+    "paid": "Сплатив",
+    "balance": "Баланс",
+    "transfers": "Перекази",
+    "owes": "винен",
+    "to": "для"
+  },
+  "schedule": {
+    "day": "День"
+  },
+  "chat": {
+    "placeholder": "Написати повідомлення...",
+    "send": "Надіслати"
+  },
+  "docs": {
+    "upload": "Завантажити",
+    "noDocuments": "Немає документів"
+  },
+  "participants": {
+    "organizer": "Організатор",
+    "participant": "Учасник",
+    "invite": "Запросити"
+  },
+  "route": {
+    "country": "Країна",
+    "duration": "Тривалість"
+  }
+}

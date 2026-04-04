@@ -1,0 +1,24 @@
+name = "trip-planner-api"
+main = "src/index.js"
+compatibility_date = "2024-09-23"
+
+[vars]
+FRONTEND_URL = "http://localhost:5173"
+# OAuth credentials — set these as secrets via `wrangler secret put`
+# GOOGLE_CLIENT_ID = ""
+# GOOGLE_CLIENT_SECRET = ""
+# FACEBOOK_APP_ID = ""
+# FACEBOOK_APP_SECRET = ""
+# X_CLIENT_ID = ""
+# X_CLIENT_SECRET = ""
+# EMAIL_API_KEY = "" # e.g. Resend or Mailgun API key
+# EMAIL_FROM = "noreply@yourdomain.com"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "trip-planner-db"
+database_id = "YOUR_D1_DATABASE_ID"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "YOUR_KV_NAMESPACE_ID"
