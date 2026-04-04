@@ -1,162 +1,99 @@
-import React, { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import {
+  Container, Paper, Title, Text, TextInput, PasswordInput, Button,
+  Checkbox, Group, Anchor, Stack, Alert, Center, Box,
+} from '@mantine/core';
+import { IconAlertCircle, IconPlane } from '@tabler/icons-react';
+import { useAuth } from '@/context/AuthContext';
+import OAuthButtons from '@/components/shared/OAuthButtons';
+import LanguageSwitcher from '@/components/shared/LanguageSwitcher';
 
-const LoginPage = ({ onLogin, onNavigateToRegister }) => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-  const [error, setError] = useState("");
+const LoginPage = () => {
+  const { t } = useTranslation();
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const [rememberMe, setRememberMe] = useState(true);
-
-  // В handleSubmit передавайте значення rememberMe:
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.email || !formData.password) {
-      setError("Будь ласка, заповніть всі поля");
-      return;
-    }
-    onLogin(formData, rememberMe);
+    if (!email || !password) { setError(t('auth.fillAllFields')); return; }
+    setLoading(true);
+    setError('');
+    const result = await login(email, password);
+    if (!result.success) setError(result.error || t('auth.invalidCredentials'));
+    setLoading(false);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h1 className="text-center text-3xl font-bold text-blue-600 mb-3">
-          TripPlanner
-        </h1>
-        <h2 className="text-center text-xl font-semibold text-gray-900">
-          Увійти в акаунт
-        </h2>
-      </div>
+    <Box mih="100vh" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+      <Box pos="absolute" top={16} right={16}>
+        <LanguageSwitcher />
+      </Box>
+      <Center mih="100vh" p="md">
+        <Container size={440} w="100%">
+          <Center mb="xl">
+            <Group gap="xs">
+              <IconPlane size={36} color="white" />
+              <Title order={1} c="white">TripPlanner</Title>
+            </Group>
+          </Center>
+          <Text c="white" ta="center" mb="xl" opacity={0.9}>{t('auth.loginTitle')}</Text>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <Card>
-          <CardContent className="p-8">
+          <Paper p="xl" radius="lg" shadow="xl">
             {error && (
-              <Alert variant="destructive" className="mb-6">
-                <AlertDescription>{error}</AlertDescription>
+              <Alert icon={<IconAlertCircle size={16} />} color="red" mb="md" radius="md">
+                {error}
               </Alert>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-6 mt-8">
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Email
-                </label>
-                <input
-                  id="email"
+            <form onSubmit={handleSubmit}>
+              <Stack gap="md">
+                <TextInput
+                  label={t('auth.email')}
+                  placeholder="you@example.com"
                   type="email"
                   required
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  size="md"
                 />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Пароль
-                </label>
-                <div className="mt-1 relative">
-                  <input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    required
-                    className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    value={formData.password}
-                    onChange={(e) =>
-                      setFormData({ ...formData, password: e.target.value })
-                    }
-                  />
-                  <button
-                    type="button"
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-5 w-5 text-gray-400" />
-                    ) : (
-                      <Eye className="h-5 w-5 text-gray-400" />
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    id="remember-me"
-                    type="checkbox"
-                    checked={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.checked)}
-                    className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                  />
-                  <label
-                    htmlFor="remember-me"
-                    className="ml-2 block text-sm text-gray-700"
-                  >
-                    Запам'ятати мене
-                  </label>
-                </div>
-
-                <div className="text-sm">
-                  <button
-                    type="button"
-                    className="font-medium text-blue-600 hover:text-blue-500"
-                  >
-                    Забули пароль?
-                  </button>
-                </div>
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full bg-blue-600 text-white hover:bg-blue-700"
-              >
-                Увійти
-              </Button>
+                <PasswordInput
+                  label={t('auth.password')}
+                  placeholder="••••••••"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  size="md"
+                />
+                <Group justify="space-between">
+                  <Checkbox label={t('auth.rememberMe')} size="sm" />
+                  <Anchor size="sm" onClick={() => navigate('/forgot-password')}>
+                    {t('auth.forgotPassword')}
+                  </Anchor>
+                </Group>
+                <Button type="submit" fullWidth size="md" loading={loading}>
+                  {t('auth.login')}
+                </Button>
+              </Stack>
             </form>
 
-            <div className="mt-6">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="bg-white px-2 text-gray-500">Або</span>
-                </div>
-              </div>
+            <OAuthButtons onError={setError} />
 
-              <div className="mt-6">
-                <button
-                  type="button"
-                  onClick={onNavigateToRegister}
-                  className="w-full text-center text-sm text-gray-600 hover:text-gray-900"
-                >
-                  Не маєте акаунту?{" "}
-                  <span className="text-blue-600">Зареєструватися</span>
-                </button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+            <Text ta="center" mt="lg" size="sm">
+              {t('auth.noAccount')}{' '}
+              <Anchor onClick={() => navigate('/register')} fw={600}>
+                {t('auth.register')}
+              </Anchor>
+            </Text>
+          </Paper>
+        </Container>
+      </Center>
+    </Box>
   );
 };
 
