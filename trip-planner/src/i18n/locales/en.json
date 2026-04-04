@@ -1,7 +1,5 @@
 {
-  "app": {
-    "name": "TripPlanner"
-  },
+  "app": { "name": "TripPlanner" },
   "auth": {
     "login": "Sign In",
     "loginTitle": "Sign in to your account",
@@ -106,24 +104,95 @@
     "owes": "owes",
     "to": "to"
   },
-  "schedule": {
-    "day": "Day"
+  "schedule": { "day": "Day" },
+  "chat": { "placeholder": "Write a message...", "send": "Send" },
+  "docs": { "upload": "Upload", "noDocuments": "No documents" },
+  "participants": { "organizer": "Organizer", "participant": "Participant", "invite": "Invite" },
+  "route": { "country": "Country", "duration": "Duration" },
+  "landing": {
+    "heroSubtitle": "Plan trips together with friends. Routes, expenses, schedules — all in one place.",
+    "getStarted": "Get Started Free",
+    "forOperators": "For Tour Operators",
+    "forTravelers": "For Travelers",
+    "featuresTitle": "Everything for the perfect trip",
+    "featuresSubtitle": "From route planning to expense splitting — we've got every detail covered.",
+    "feature1Title": "Routes",
+    "feature1Desc": "Plan your route with map points, notes and photos for each location.",
+    "feature2Title": "Collaborative Planning",
+    "feature2Desc": "Invite friends and plan together in real-time.",
+    "feature3Title": "Expense Splitting",
+    "feature3Desc": "Automatic calculation of who owes whom. Fair split guaranteed.",
+    "feature4Title": "Schedule",
+    "feature4Desc": "Detailed day-by-day plan with timeline for your trip.",
+    "feature5Title": "Chat",
+    "feature5Desc": "Discuss trip details right in the app.",
+    "feature6Title": "Security",
+    "feature6Desc": "Your data is protected. Documents are stored securely.",
+    "operatorCTATitle": "Are you a tour operator?",
+    "operatorCTADesc": "Create tours, invite clients, track expenses and profit.",
+    "learnMore": "Learn More",
+    "allRights": "All rights reserved."
   },
-  "chat": {
-    "placeholder": "Write a message...",
-    "send": "Send"
+  "operator": {
+    "badge": "Operator",
+    "dashboard": "Dashboard",
+    "dashboardDesc": "Overview of your tours and statistics",
+    "registerTitle": "Tour Operator Registration",
+    "registerBtn": "Register Company",
+    "companyName": "Company Name",
+    "companyNamePlaceholder": "Your travel company",
+    "description": "Company Description",
+    "descriptionPlaceholder": "Tell us about your company and services...",
+    "heroTitle": "Platform for Tour Operators",
+    "heroSubtitle": "Create tours, manage clients, track finances — all in one place.",
+    "featuresTitle": "Features for your business",
+    "feat1Title": "Tour Creation",
+    "feat1Desc": "Convenient tour builder with routes, schedules and descriptions.",
+    "feat2Title": "Invite Links",
+    "feat2Desc": "Generate unique links to invite clients to your tours.",
+    "feat3Title": "Financial Tracking",
+    "feat3Desc": "Track revenue, expenses and profit for each tour.",
+    "feat4Title": "Analytics",
+    "feat4Desc": "Sales statistics, popular destinations and client insights.",
+    "feat5Title": "Client Management",
+    "feat5Desc": "Manage your client base, payments and feedback.",
+    "feat6Title": "Integrations",
+    "feat6Desc": "Connect with Booking, ticket services and other platforms.",
+    "howItWorks": "How It Works",
+    "step1": "Register your company and fill in your profile",
+    "step2": "Create a tour with routes, schedule and pricing",
+    "step3": "Send invite links to your clients",
+    "step4": "Track payments and manage the tour",
+    "createTour": "Create Tour",
+    "tourName": "Tour Name",
+    "tourNamePlaceholder": "e.g.: Paris Adventures",
+    "tourDescription": "Tour Description",
+    "tourDescriptionPlaceholder": "Detailed description for clients...",
+    "tourDates": "Tour Dates",
+    "tourPrice": "Price per person",
+    "currency": "Currency",
+    "maxParticipants": "Max participants",
+    "tags": "Tags",
+    "tagsPlaceholder": "Select tags",
+    "integrationHint": "Integrations with Booking.com, Viator and other services coming soon.",
+    "statTours": "Active Tours",
+    "statClients": "Clients",
+    "statRevenue": "Revenue",
+    "statInvites": "Invitations",
+    "recentTours": "Recent Tours",
+    "clients": "clients",
+    "inviteLink": "Invite Link",
+    "revenue": "Revenue",
+    "totalExpenses": "Expenses",
+    "profit": "Profit",
+    "addExpense": "Add Expense",
+    "category": "Category",
+    "amount": "Amount"
   },
-  "docs": {
-    "upload": "Upload",
-    "noDocuments": "No documents"
-  },
-  "participants": {
-    "organizer": "Organizer",
-    "participant": "Participant",
-    "invite": "Invite"
-  },
-  "route": {
-    "country": "Country",
-    "duration": "Duration"
+  "invite": {
+    "loginRequired": "Login Required",
+    "loginRequiredDesc": "To join this trip, please sign in or create an account first.",
+    "success": "You've successfully joined the trip!",
+    "error": "This link is invalid or has expired."
   }
 }

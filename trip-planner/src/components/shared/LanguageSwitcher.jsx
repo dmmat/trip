@@ -1,25 +1,26 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Globe } from 'lucide-react';
+import { ActionIcon, Tooltip } from '@mantine/core';
+import { IconLanguage } from '@tabler/icons-react';
 
-const LanguageSwitcher = ({ className = '' }) => {
+const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
 
-  const toggleLanguage = () => {
-    const newLang = i18n.language === 'uk' ? 'en' : 'uk';
-    i18n.changeLanguage(newLang);
-    localStorage.setItem('language', newLang);
+  const toggle = () => {
+    const next = i18n.language === 'uk' ? 'en' : 'uk';
+    i18n.changeLanguage(next);
+    localStorage.setItem('language', next);
   };
 
+  const label = i18n.language === 'uk' ? 'EN' : 'UA';
+  const tip = i18n.language === 'uk' ? 'Switch to English' : 'Перемкнути на українську';
+
   return (
-    <button
-      onClick={toggleLanguage}
-      className={`flex items-center gap-1 px-2 py-1 text-sm rounded-md hover:bg-gray-100 text-gray-600 ${className}`}
-      title={i18n.language === 'uk' ? 'Switch to English' : 'Перемкнути на українську'}
-    >
-      <Globe className="w-4 h-4" />
-      <span className="font-medium uppercase">{i18n.language === 'uk' ? 'EN' : 'UA'}</span>
-    </button>
+    <Tooltip label={tip} withArrow>
+      <ActionIcon variant="subtle" color="gray" size="lg" onClick={toggle} aria-label={tip}>
+        <IconLanguage size={20} />
+      </ActionIcon>
+    </Tooltip>
   );
 };
 

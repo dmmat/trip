@@ -1,98 +1,73 @@
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Card, Text, Group, Stack, Paper, Badge, Button, Divider } from '@mantine/core';
+import { IconPlus, IconArrowRight } from '@tabler/icons-react';
 
 const ExpensesCard = ({ trip }) => {
+  const { t } = useTranslation();
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Витрати</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-6">
-          <div className="flex justify-between items-center">
-            <div>
-              <h3 className="font-medium">Загальні витрати</h3>
-              <p className="text-2xl font-bold text-gray-900">
-                {trip.expenses.total.toLocaleString()} грн
-              </p>
-            </div>
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-              Додати витрату
-            </button>
-          </div>
+    <Stack gap="lg">
+      <Group justify="space-between">
+        <Stack gap={0}>
+          <Text size="sm" c="dimmed">{t('expenses.total')}</Text>
+          <Text size="xl" fw={700}>{trip.expenses.total.toLocaleString()} {t('common.uah')}</Text>
+        </Stack>
+        <Button size="sm" leftSection={<IconPlus size={16} />}>{t('common.edit')}</Button>
+      </Group>
 
-          <div className="divide-y">
-            {trip.expenses.categories.map((category) => (
-              <div key={category.id} className="py-4">
-                <h4 className="font-medium mb-2">{category.name}</h4>
-                <div className="bg-gray-50 p-4 rounded-lg space-y-2">
-                  {category.items.map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex justify-between items-center"
-                    >
-                      <span>{item.name}</span>
-                      <div className="text-right">
-                        <div className="font-medium">
-                          {item.amount.toLocaleString()} грн
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          Сплатив: {item.user.name}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+      {trip.expenses.categories.map((cat) => (
+        <Card key={cat.id} withBorder radius="md" padding="md">
+          <Text fw={600} mb="sm">{cat.name}</Text>
+          <Stack gap="xs">
+            {cat.items.map((item) => (
+              <Group key={item.id} justify="space-between">
+                <Text size="sm">{item.name}</Text>
+                <Stack gap={0} align="flex-end">
+                  <Text size="sm" fw={600}>{item.amount.toLocaleString()} {t('common.uah')}</Text>
+                  <Text size="xs" c="dimmed">{t('expenses.paid')}: {item.user?.name}</Text>
+                </Stack>
+              </Group>
             ))}
-          </div>
+          </Stack>
+        </Card>
+      ))}
 
-          <div className="mt-6">
-            <h4 className="font-medium mb-4">Розподіл витрат</h4>
-            <div className="bg-gray-50 p-4 rounded-lg space-y-4">
-              {trip.expenses.participants_cost.map((participant) => (
-                <div
-                  key={participant.id}
-                  className="flex justify-between items-center"
-                >
-                  <span>{participant.user?.name}</span>
-                  <div className="text-right">
-                    <span className="font-medium">
-                      {participant.total_paid.toLocaleString()} грн
-                    </span>
-                    <div
-                      className={`text-sm ${participant.balance > 0 ? "text-green-500" : "text-red-500"}`}
-                    >
-                      {participant.balance > 0 ? "+" : ""}
-                      {participant.balance.toLocaleString()} грн
-                    </div>
-                  </div>
-                </div>
-              ))}
+      <Divider />
 
-              {trip.expenses.transfers &&
-                trip.expenses.transfers.length > 0 && (
-                  <div className="border-t pt-4 mt-4">
-                    <h5 className="font-medium mb-2">Необхідні перекази:</h5>
-                    {trip.expenses.transfers.map((transfer) => (
-                      <div
-                        key={transfer.id}
-                        className="flex justify-between items-center text-sm"
-                      >
-                        <span>
-                          {transfer.from?.name} → {transfer.to?.name}
-                        </span>
-                        <span className="font-medium">
-                          {transfer.amount.toLocaleString()} грн
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+      <Card withBorder radius="md" padding="md">
+        <Text fw={600} mb="sm">{t('expenses.balance')}</Text>
+        <Stack gap="xs">
+          {trip.expenses.participants_cost?.map((p) => (
+            <Group key={p.id} justify="space-between">
+              <Text size="sm">{p.user?.name}</Text>
+              <Group gap="md">
+                <Text size="sm">{p.total_paid.toLocaleString()} {t('common.uah')}</Text>
+                <Badge variant="light" color={p.balance > 0 ? 'green' : 'red'}>
+                  {p.balance > 0 ? '+' : ''}{p.balance.toLocaleString()} {t('common.uah')}
+                </Badge>
+              </Group>
+            </Group>
+          ))}
+        </Stack>
+      </Card>
+
+      {trip.expenses.transfers?.length > 0 && (
+        <Card withBorder radius="md" padding="md">
+          <Text fw={600} mb="sm">{t('expenses.transfers')}</Text>
+          <Stack gap="xs">
+            {trip.expenses.transfers.map((tr, i) => (
+              <Group key={i} gap="xs">
+                <Text size="sm">{tr.from?.name}</Text>
+                <IconArrowRight size={14} />
+                <Text size="sm">{tr.to?.name}</Text>
+                <Badge variant="light" ml="auto">{tr.amount.toLocaleString()} {t('common.uah')}</Badge>
+              </Group>
+            ))}
+          </Stack>
+        </Card>
+      )}
+    </Stack>
   );
 };
 

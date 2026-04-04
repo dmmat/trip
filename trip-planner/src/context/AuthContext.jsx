@@ -9,17 +9,13 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const { i18n } = useTranslation();
 
-  // Check session on mount
   useEffect(() => {
     api.auth.me()
       .then(({ user }) => {
         setUser(user);
-        if (user?.locale) {
-          i18n.changeLanguage(user.locale);
-        }
+        if (user?.locale) i18n.changeLanguage(user.locale);
       })
       .catch(() => {
-        // Try localStorage fallback for demo mode
         const saved = localStorage.getItem('user');
         if (saved) setUser(JSON.parse(saved));
       })
@@ -34,9 +30,8 @@ export function AuthProvider({ children }) {
       if (user.locale) i18n.changeLanguage(user.locale);
       return { success: true };
     } catch (err) {
-      // Fallback for demo mode (no backend)
       if (err.message === 'Failed to fetch') {
-        const demoUser = { id: 'demo', name: 'Demo User', email, locale: i18n.language, email_verified: true };
+        const demoUser = { id: 'demo', name: 'Demo User', email, locale: i18n.language, email_verified: true, role: 'user' };
         setUser(demoUser);
         localStorage.setItem('user', JSON.stringify(demoUser));
         return { success: true };
@@ -45,15 +40,15 @@ export function AuthProvider({ children }) {
     }
   }, [i18n]);
 
-  const register = useCallback(async (name, email, password) => {
+  const register = useCallback(async (name, email, password, role = 'user') => {
     try {
-      const { user, message } = await api.auth.register(name, email, password, i18n.language);
+      const { user, message } = await api.auth.register(name, email, password, i18n.language, role);
       setUser(user);
       localStorage.setItem('user', JSON.stringify(user));
       return { success: true, message };
     } catch (err) {
       if (err.message === 'Failed to fetch') {
-        const demoUser = { id: 'demo', name, email, locale: i18n.language, email_verified: false };
+        const demoUser = { id: 'demo', name, email, locale: i18n.language, email_verified: false, role };
         setUser(demoUser);
         localStorage.setItem('user', JSON.stringify(demoUser));
         return { success: true };
@@ -63,11 +58,7 @@ export function AuthProvider({ children }) {
   }, [i18n]);
 
   const logout = useCallback(async () => {
-    try {
-      await api.auth.logout();
-    } catch {
-      // Continue with local logout even if API fails
-    }
+    try { await api.auth.logout(); } catch {}
     setUser(null);
     localStorage.removeItem('user');
   }, []);
@@ -111,16 +102,7 @@ export function AuthProvider({ children }) {
   }, [i18n]);
 
   return (
-    <AuthContext.Provider value={{
-      user,
-      loading,
-      login,
-      register,
-      logout,
-      updateUser,
-      oauthLogin,
-      oauthCallback,
-    }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, updateUser, oauthLogin, oauthCallback }}>
       {children}
     </AuthContext.Provider>
   );
@@ -128,8 +110,6 @@ export function AuthProvider({ children }) {
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
-  }
+  if (!context) throw new Error('useAuth must be used within AuthProvider');
   return context;
 }

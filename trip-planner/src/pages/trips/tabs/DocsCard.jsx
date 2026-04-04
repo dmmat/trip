@@ -1,141 +1,47 @@
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { FileText } from "lucide-react";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Card, Text, Group, Stack, Paper, ThemeIcon, Button } from '@mantine/core';
+import { IconFileText, IconUpload, IconDownload } from '@tabler/icons-react';
+
+const categoryColors = {
+  transport: 'blue', accommodation: 'green', insurance: 'violet', other: 'orange',
+};
 
 const DocsCard = ({ trip }) => {
+  const { t } = useTranslation();
+
+  const categories = [...new Set(trip.documents.map((d) => d.category))];
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex justify-between items-center">
-          <span>Документи та файли</span>
-          <button className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700">
-            Завантажити файл
-          </button>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-6">
-          {/* Проїзд */}
-          <div>
-            <h3 className="font-medium text-gray-700 mb-3">Проїзд</h3>
-            <div className="space-y-2">
-              {trip.documents
-                .filter((doc) => doc.category === "transport")
-                .map((doc) => (
-                  <div
-                    key={doc.id}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-                  >
-                    <div className="flex items-center space-x-3">
-                      <div className="p-2 bg-blue-100 rounded-lg">
-                        <FileText className="w-5 h-5 text-blue-600" />
-                      </div>
-                      <div>
-                        <p className="font-medium">{doc.name}</p>
-                        <p className="text-sm text-gray-500">
-                          {doc.size} • {doc.addedDate}
-                        </p>
-                      </div>
-                    </div>
-                    <button className="text-blue-600 hover:text-blue-700">
-                      Завантажити
-                    </button>
-                  </div>
-                ))}
-            </div>
-          </div>
+    <Stack gap="lg">
+      <Group justify="flex-end">
+        <Button size="sm" leftSection={<IconUpload size={16} />}>{t('docs.upload')}</Button>
+      </Group>
 
-          {/* Проживання */}
-          <div>
-            <h3 className="font-medium text-gray-700 mb-3">Проживання</h3>
-            <div className="space-y-2">
-              {trip.documents
-                .filter((doc) => doc.category === "accommodation")
-                .map((doc) => (
-                  <div
-                    key={doc.id}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-                  >
-                    <div className="flex items-center space-x-3">
-                      <div className="p-2 bg-green-100 rounded-lg">
-                        <FileText className="w-5 h-5 text-green-600" />
-                      </div>
-                      <div>
-                        <p className="font-medium">{doc.name}</p>
-                        <p className="text-sm text-gray-500">
-                          {doc.size} • {doc.addedDate}
-                        </p>
-                      </div>
-                    </div>
-                    <button className="text-blue-600 hover:text-blue-700">
-                      Завантажити
-                    </button>
-                  </div>
-                ))}
-            </div>
-          </div>
-
-          {/* Страхування */}
-          <div>
-            <h3 className="font-medium text-gray-700 mb-3">Страхування</h3>
-            <div className="space-y-2">
-              {trip.documents
-                .filter((doc) => doc.category === "insurance")
-                .map((doc) => (
-                  <div
-                    key={doc.id}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-                  >
-                    <div className="flex items-center space-x-3">
-                      <div className="p-2 bg-purple-100 rounded-lg">
-                        <FileText className="w-5 h-5 text-purple-600" />
-                      </div>
-                      <div>
-                        <p className="font-medium">{doc.name}</p>
-                        <p className="text-sm text-gray-500">
-                          {doc.size} • {doc.addedDate}
-                        </p>
-                      </div>
-                    </div>
-                    <button className="text-blue-600 hover:text-blue-700">
-                      Завантажити
-                    </button>
-                  </div>
-                ))}
-            </div>
-          </div>
-
-          {/* Інші документи */}
-          <div>
-            <h3 className="font-medium text-gray-700 mb-3">Інші документи</h3>
-            <div className="space-y-2">
-              {trip.documents
-                .filter((doc) => doc.category === "other")
-                .map((doc) => (
-                  <div
-                    key={doc.id}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-                  >
-                    <div className="flex items-center space-x-3">
-                      <div className="p-2 bg-orange-100 rounded-lg">
-                        <FileText className="w-5 h-5 text-orange-600" />
-                      </div>
-                      <div>
-                        <p className="font-medium">{doc.name}</p>
-                        <p className="text-sm text-gray-500">
-                          {doc.size} • {doc.addedDate}
-                        </p>
-                      </div>
-                    </div>
-                    <button className="text-blue-600 hover:text-blue-700">
-                      Завантажити
-                    </button>
-                  </div>
-                ))}
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+      {categories.map((cat) => (
+        <Stack key={cat} gap="xs">
+          <Text fw={600} tt="capitalize">{cat}</Text>
+          {trip.documents.filter((d) => d.category === cat).map((doc) => (
+            <Paper key={doc.id} withBorder p="md" radius="md">
+              <Group justify="space-between">
+                <Group gap="sm">
+                  <ThemeIcon variant="light" color={categoryColors[cat] || 'gray'} size="lg" radius="md">
+                    <IconFileText size={18} />
+                  </ThemeIcon>
+                  <Stack gap={0}>
+                    <Text size="sm" fw={500}>{doc.name}</Text>
+                    <Text size="xs" c="dimmed">{doc.size} • {doc.addedDate}</Text>
+                  </Stack>
+                </Group>
+                <Button variant="subtle" size="xs" leftSection={<IconDownload size={14} />}>
+                  {t('docs.upload')}
+                </Button>
+              </Group>
+            </Paper>
+          ))}
+        </Stack>
+      ))}
+    </Stack>
   );
 };
 

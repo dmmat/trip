@@ -1,10 +1,4 @@
-import { clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
 import i18n from "../i18n";
-
-export function cn(...inputs) {
-  return twMerge(clsx(inputs));
-}
 
 function getLocale() {
   return i18n.language === "en" ? "en-US" : "uk-UA";

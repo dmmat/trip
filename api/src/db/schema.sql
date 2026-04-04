@@ -8,6 +8,9 @@ CREATE TABLE IF NOT EXISTS users (
   phone TEXT,
   location TEXT,
   locale TEXT DEFAULT 'uk',
+  role TEXT DEFAULT 'user', -- 'user' or 'operator'
+  company_name TEXT,
+  company_description TEXT,
   email_verified INTEGER DEFAULT 0,
   created_at TEXT DEFAULT (datetime('now')),
   updated_at TEXT DEFAULT (datetime('now'))
@@ -152,6 +155,95 @@ CREATE TABLE IF NOT EXISTS chat_messages (
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+-- Invite links (for both users and operators)
+CREATE TABLE IF NOT EXISTS invite_links (
+  id TEXT PRIMARY KEY,
+  code TEXT UNIQUE NOT NULL,
+  trip_id TEXT,
+  tour_id TEXT,
+  created_by TEXT NOT NULL,
+  max_uses INTEGER DEFAULT 0, -- 0 = unlimited
+  uses INTEGER DEFAULT 0,
+  expires_at TEXT,
+  created_at TEXT DEFAULT (datetime('now')),
+  FOREIGN KEY (trip_id) REFERENCES trips(id) ON DELETE CASCADE,
+  FOREIGN KEY (tour_id) REFERENCES operator_tours(id) ON DELETE CASCADE,
+  FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Operator tours (tours created by operators for clients)
+CREATE TABLE IF NOT EXISTS operator_tours (
+  id TEXT PRIMARY KEY,
+  operator_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  description TEXT,
+  status TEXT DEFAULT 'draft', -- 'draft', 'active', 'completed', 'cancelled'
+  start_date TEXT,
+  end_date TEXT,
+  price REAL DEFAULT 0,
+  currency TEXT DEFAULT 'UAH',
+  max_participants INTEGER DEFAULT 0,
+  tags TEXT, -- JSON array of tags
+  created_at TEXT DEFAULT (datetime('now')),
+  updated_at TEXT DEFAULT (datetime('now')),
+  FOREIGN KEY (operator_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Tour locations
+CREATE TABLE IF NOT EXISTS tour_locations (
+  id TEXT PRIMARY KEY,
+  tour_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  country TEXT,
+  sort_order INTEGER DEFAULT 0,
+  FOREIGN KEY (tour_id) REFERENCES operator_tours(id) ON DELETE CASCADE
+);
+
+-- Tour participants (clients)
+CREATE TABLE IF NOT EXISTS tour_participants (
+  id TEXT PRIMARY KEY,
+  tour_id TEXT NOT NULL,
+  user_id TEXT NOT NULL,
+  status TEXT DEFAULT 'pending', -- 'pending', 'confirmed', 'cancelled'
+  amount_paid REAL DEFAULT 0,
+  joined_at TEXT DEFAULT (datetime('now')),
+  FOREIGN KEY (tour_id) REFERENCES operator_tours(id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  UNIQUE(tour_id, user_id)
+);
+
+-- Operator expenses (costs for running a tour)
+CREATE TABLE IF NOT EXISTS tour_expenses (
+  id TEXT PRIMARY KEY,
+  tour_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  category TEXT,
+  amount REAL NOT NULL,
+  currency TEXT DEFAULT 'UAH',
+  created_at TEXT DEFAULT (datetime('now')),
+  FOREIGN KEY (tour_id) REFERENCES operator_tours(id) ON DELETE CASCADE
+);
+
+-- Integration bookings (tracked bookings from external services)
+CREATE TABLE IF NOT EXISTS integration_bookings (
+  id TEXT PRIMARY KEY,
+  trip_id TEXT,
+  tour_id TEXT,
+  provider TEXT NOT NULL, -- 'booking', 'viator', 'skyscanner', etc.
+  external_id TEXT NOT NULL,
+  type TEXT NOT NULL, -- 'hotel', 'activity', 'flight', 'transfer'
+  name TEXT,
+  status TEXT DEFAULT 'pending', -- 'pending', 'confirmed', 'cancelled'
+  price REAL,
+  currency TEXT,
+  check_in TEXT,
+  check_out TEXT,
+  metadata TEXT, -- JSON blob with provider-specific data
+  created_at TEXT DEFAULT (datetime('now')),
+  FOREIGN KEY (trip_id) REFERENCES trips(id) ON DELETE SET NULL,
+  FOREIGN KEY (tour_id) REFERENCES operator_tours(id) ON DELETE SET NULL
+);
+
 -- Indexes
 CREATE INDEX IF NOT EXISTS idx_oauth_user ON oauth_accounts(user_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_user ON sessions(user_id);
@@ -163,3 +255,13 @@ CREATE INDEX IF NOT EXISTS idx_expense_items_trip ON expense_items(trip_id);
 CREATE INDEX IF NOT EXISTS idx_schedule_days_trip ON schedule_days(trip_id);
 CREATE INDEX IF NOT EXISTS idx_chat_messages_trip ON chat_messages(trip_id);
 CREATE INDEX IF NOT EXISTS idx_documents_trip ON documents(trip_id);
+CREATE INDEX IF NOT EXISTS idx_invite_links_code ON invite_links(code);
+CREATE INDEX IF NOT EXISTS idx_invite_links_trip ON invite_links(trip_id);
+CREATE INDEX IF NOT EXISTS idx_invite_links_tour ON invite_links(tour_id);
+CREATE INDEX IF NOT EXISTS idx_operator_tours_operator ON operator_tours(operator_id);
+CREATE INDEX IF NOT EXISTS idx_tour_participants_tour ON tour_participants(tour_id);
+CREATE INDEX IF NOT EXISTS idx_tour_participants_user ON tour_participants(user_id);
+CREATE INDEX IF NOT EXISTS idx_tour_expenses_tour ON tour_expenses(tour_id);
+CREATE INDEX IF NOT EXISTS idx_integration_bookings_trip ON integration_bookings(trip_id);
+CREATE INDEX IF NOT EXISTS idx_integration_bookings_tour ON integration_bookings(tour_id);
+CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);

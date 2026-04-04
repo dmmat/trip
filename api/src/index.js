@@ -3,6 +3,8 @@ import { cors } from 'hono/cors';
 import { authRoutes } from './routes/auth.js';
 import { tripRoutes } from './routes/trips.js';
 import { userRoutes } from './routes/users.js';
+import { inviteRoutes } from './routes/invites.js';
+import { operatorRoutes } from './routes/operator.js';
 import { authMiddleware } from './middleware/auth.js';
 
 const app = new Hono();
@@ -28,6 +30,8 @@ app.route('/api/auth', authRoutes);
 app.use('/api/*', authMiddleware);
 app.route('/api/trips', tripRoutes);
 app.route('/api/users', userRoutes);
+app.route('/api/invites', inviteRoutes);
+app.route('/api/operator', operatorRoutes);
 
 // 404
 app.notFound((c) => c.json({ error: 'Not found' }, 404));

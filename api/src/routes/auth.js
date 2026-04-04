@@ -9,7 +9,7 @@ export const authRoutes = new Hono();
 // ─── Email Registration ───────────────────────────────────
 
 authRoutes.post('/register', async (c) => {
-  const { name, email, password, locale } = await c.req.json();
+  const { name, email, password, locale, role, companyName, companyDescription } = await c.req.json();
 
   if (!name || !email || !password) {
     return c.json({ error: 'Name, email and password are required' }, 400);
@@ -31,9 +31,10 @@ authRoutes.post('/register', async (c) => {
   const userId = generateId();
   const passwordHash = await hashPassword(password);
 
+  const userRole = ['user', 'operator'].includes(role) ? role : 'user';
   await c.env.DB.prepare(
-    'INSERT INTO users (id, email, name, password_hash, locale) VALUES (?, ?, ?, ?, ?)'
-  ).bind(userId, email.toLowerCase(), name, passwordHash, locale || 'uk').run();
+    'INSERT INTO users (id, email, name, password_hash, locale, role, company_name, company_description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+  ).bind(userId, email.toLowerCase(), name, passwordHash, locale || 'uk', userRole, companyName || null, companyDescription || null).run();
 
   // Send verification email
   const token = generateToken();
@@ -44,7 +45,7 @@ authRoutes.post('/register', async (c) => {
   setSessionCookie(c, sessionId);
 
   return c.json({
-    user: { id: userId, name, email: email.toLowerCase(), locale: locale || 'uk', email_verified: false },
+    user: { id: userId, name, email: email.toLowerCase(), locale: locale || 'uk', email_verified: false, role: userRole },
     message: 'Registration successful. Please check your email to verify.',
   });
 });
@@ -81,6 +82,7 @@ authRoutes.post('/login', async (c) => {
       email: user.email,
       avatar: user.avatar,
       locale: user.locale,
+      role: user.role,
       email_verified: !!user.email_verified,
     },
   });
@@ -192,7 +194,7 @@ authRoutes.get('/me', async (c) => {
   }
 
   const session = await c.env.DB.prepare(
-    "SELECT u.id, u.email, u.name, u.avatar, u.phone, u.location, u.locale, u.email_verified FROM sessions s JOIN users u ON s.user_id = u.id WHERE s.id = ? AND s.expires_at > datetime('now')"
+    "SELECT u.id, u.email, u.name, u.avatar, u.phone, u.location, u.locale, u.role, u.email_verified FROM sessions s JOIN users u ON s.user_id = u.id WHERE s.id = ? AND s.expires_at > datetime('now')"
   ).bind(decodeURIComponent(match[1])).first();
 
   if (!session) {
@@ -209,6 +211,7 @@ authRoutes.get('/me', async (c) => {
       phone: session.phone,
       location: session.location,
       locale: session.locale,
+      role: session.role,
       email_verified: !!session.email_verified,
     },
   });
